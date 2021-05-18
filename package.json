@@ -1,0 +1,23 @@
+{
+  "name": "personal-blog",
+  "version": "1.0.0",
+  "description": "Personal Blog Project By using EJS and Express",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chinmaynavale/personal-blog.git"
+  },
+  "author": "Chinmay Navale",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chinmaynavale/personal-blog/issues"
+  },
+  "homepage": "https://github.com/chinmaynavale/personal-blog#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  }
+}
