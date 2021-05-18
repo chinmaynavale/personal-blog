@@ -1,2 +1,5 @@
 # Dependency directories
 node_modules/
+
+# Prettier Code Formatter
+.prettierignore
