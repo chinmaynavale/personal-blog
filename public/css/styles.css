@@ -15,6 +15,10 @@
   color: #1abc9c !important;
 }
 
+.post {
+  margin: 15px auto;
+}
+
 .footer-padding {
   padding-bottom: 60px;
 }
