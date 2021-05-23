@@ -1,11 +1,15 @@
 <%- include('./partials/header');  %> 
 
 <h1>Home</h1>
+<p><%= startingContent %></p>
 
-<% startingContent.forEach(post => { %>
+<% posts.forEach(post => { %>
     <div class="post">
         <h3><%= post.title %></h3>
-        <p><%= post.body %></p>
+        <% if (post.body.length > 150) { %>
+            <p><%= post.body.substring(0, 150) + ' ...' %></p>
+            <a href="/posts/<%=post.title%>" class="btn btn-info btn-sm">Read More</a>
+        <% } %>
     </div>
 <% }) %>
 
