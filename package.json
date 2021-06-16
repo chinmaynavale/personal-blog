@@ -4,7 +4,9 @@
   "description": "Personal Blog Project By using EJS and Express",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "devStart": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +23,8 @@
     "express": "^4.17.1",
     "lodash": "^4.17.21",
     "mongoose": "^5.12.14"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0"
   }
 }

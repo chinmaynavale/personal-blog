@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 const express = require('express');
 const _ = require('lodash/string');
 const app = express();
@@ -15,7 +19,7 @@ const contactContent =
   'Scelerisque eleifend donec pretium vulputate sapien. Rhoncus urna neque viverra justo nec ultrices. Arcu dui vivamus arcu felis bibendum. Consectetur adipiscing elit duis tristique. Risus viverra adipiscing at in tellus integer feugiat. Sapien nec sagittis aliquam malesuada bibendum arcu vitae. Consequat interdum varius sit amet mattis. Iaculis nunc sed augue lacus. Interdum posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Pulvinar elementum integer enim neque. Ultrices gravida dictum fusce ut placerat orci nulla. Mauris in aliquam sem fringilla ut morbi tincidunt. Tortor posuere ac ut consequat semper viverra nam libero.';
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/personalBlogDB', {
+mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -47,7 +51,7 @@ app.get('/', async (req, res) => {
       });
     });
   } catch (err) {
-    console.log('While accessing at home route', err);
+    console.log('While fetching data at home route', err);
   }
 });
 
@@ -86,7 +90,7 @@ app.get('/posts/:postId', async (req, res) => {
       }
     });
   } catch (err) {
-    console.log('While Accessing Posts', err);
+    console.log('While fetching Post', err);
   }
 });
 
