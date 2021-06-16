@@ -6,10 +6,8 @@
 <% posts.forEach(post => { %>
     <div class="post">
         <h3><%= post.title %></h3>
-        <% if (post.body.length > 150) { %>
-            <p><%= post.body.substring(0, 150) + ' ...' %></p>
-            <a href="/posts/<%=post.title%>" class="btn btn-info btn-sm">Read More</a>
-        <% } %>
+        <p><%= post.body.substring(0, 150) + ' ...' %></p>
+        <a href="/posts/<%=post._id%>" class="btn btn-info btn-sm">Read More</a>
     </div>
 <% }) %>
 

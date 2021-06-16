@@ -14,11 +14,80 @@ const aboutContent =
 const contactContent =
   'Scelerisque eleifend donec pretium vulputate sapien. Rhoncus urna neque viverra justo nec ultrices. Arcu dui vivamus arcu felis bibendum. Consectetur adipiscing elit duis tristique. Risus viverra adipiscing at in tellus integer feugiat. Sapien nec sagittis aliquam malesuada bibendum arcu vitae. Consequat interdum varius sit amet mattis. Iaculis nunc sed augue lacus. Interdum posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Pulvinar elementum integer enim neque. Ultrices gravida dictum fusce ut placerat orci nulla. Mauris in aliquam sem fringilla ut morbi tincidunt. Tortor posuere ac ut consequat semper viverra nam libero.';
 
-const posts = [];
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/personalBlogDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+db.on('error', error => console.error(error));
+db.once('open', () => console.log('Connected to Mongoose'));
+
+const postSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  body: {
+    type: String,
+    required: true,
+  },
+});
+
+const Post = mongoose.model('Post', postSchema);
 
 // Home Page
-app.get('/', (req, res) => {
-  res.render('home', { startingContent, posts });
+app.get('/', async (req, res) => {
+  try {
+    await Post.find({}, (err, posts) => {
+      res.render('home', {
+        startingContent,
+        posts: posts,
+      });
+    });
+  } catch (err) {
+    console.log('While accessing at home route', err);
+  }
+});
+
+app.get('/compose', (req, res) => {
+  res.render('compose');
+});
+
+app.post('/', async (req, res) => {
+  const post = new Post({
+    title: req.body.newPostTitle,
+    body: req.body.newPostBody,
+  });
+
+  try {
+    await post.save(err => {
+      if (!err) {
+        res.redirect('/');
+      }
+    });
+  } catch (err) {
+    console.log('While Creating Post', err);
+  }
+});
+
+app.get('/posts/:postId', async (req, res) => {
+  const requestedPostId = req.params.postId;
+
+  try {
+    await Post.findOne({ _id: requestedPostId }, (err, post) => {
+      if (!err) {
+        res.render('post', {
+          id: post._id,
+          title: post.title,
+          body: post.body,
+        });
+      }
+    });
+  } catch (err) {
+    console.log('While Accessing Posts', err);
+  }
 });
 
 app.get('/about', (req, res) => {
@@ -27,33 +96,6 @@ app.get('/about', (req, res) => {
 
 app.get('/contact', (req, res) => {
   res.render('contact', { contactContent });
-});
-
-app.get('/compose', (req, res) => {
-  res.render('compose');
-});
-
-app.post('/', (req, res) => {
-  const post = {
-    title: req.body.newPostTitle,
-    body: req.body.newPostBody,
-  };
-
-  posts.push(post);
-
-  res.redirect('/');
-});
-
-app.get('/posts/:postName', (req, res) => {
-  const requestedTitle = _.lowerCase(req.params.postName);
-
-  posts.forEach(post => {
-    const storedTitle = _.lowerCase(post.title);
-
-    if (requestedTitle === storedTitle) {
-      res.render('post', { post });
-    }
-  });
 });
 
 const PORT = process.env.PORT || 3000;
